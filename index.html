@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Listening Test - There is/There are</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a5568;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .sentence-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .sentence-item:hover {
+            background: #e8f4fd;
+            transform: translateX(5px);
+        }
+
+        .sentence-text {
+            font-size: 1.1em;
+            color: #2d3748;
+            flex-grow: 1;
+            margin-right: 15px;
+        }
+
+        .keyword {
+            color: #e53e3e;
+            font-weight: bold;
+        }
+
+        .play-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .play-btn:hover {
+            background: #5a67d8;
+            transform: scale(1.05);
+        }
+
+        .play-btn:active {
+            transform: scale(0.95);
+        }
+
+        .play-btn.playing {
+            background: #38a169;
+        }
+
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #edf2f7;
+            border-radius: 10px;
+        }
+
+        .control-btn {
+            background: #4299e1;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 0 10px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: #3182ce;
+            transform: translateY(-2px);
+        }
+
+        .settings {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .setting-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+
+        .setting-label {
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .slider {
+            width: 120px;
+            height: 5px;
+            border-radius: 5px;
+            background: #cbd5e0;
+            outline: none;
+            transition: background 0.3s;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-left: 8px solid currentColor;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+        }
+
+        .pause-icon {
+            width: 8px;
+            height: 10px;
+            background: currentColor;
+            position: relative;
+        }
+
+        .pause-icon::before {
+            content: '';
+            position: absolute;
+            left: 4px;
+            width: 2px;
+            height: 10px;
+            background: currentColor;
+        }
+
+        .pause-icon::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 2px;
+            height: 10px;
+            background: currentColor;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎧 English Listening Test</h1>
+        <p class="subtitle">There is/There are Practice for Students</p>
+
+        <div class="settings">
+            <h3 style="margin-top: 0; color: #4a5568;">🔧 Voice Settings for Students</h3>
+            <div style="background: #e6fffa; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 13px; color: #2d5850;">
+                💡 <strong>Voice Settings:</strong> Daniel (en-GB), Malaysian English, or other clear pronunciation options available
+            </div>
+            <div class="setting-group">
+                <span class="setting-label">Voice:</span>
+                <select id="voiceSelect" style="padding: 5px 10px; border-radius: 5px; border: 1px solid #cbd5e0;">
+                    <option value="">Auto (Malaysian English / Daniel en-GB preferred)</option>
+                </select>
+            </div>
+            <div class="setting-group">
+                <span class="setting-label">Speed:</span>
+                <input type="range" id="speedSlider" class="slider" min="0.3" max="1.5" step="0.1" value="0.5">
+                <span id="speedValue">0.5x</span>
+            </div>
+            <div class="setting-group">
+                <span class="setting-label">Pitch:</span>
+                <input type="range" id="pitchSlider" class="slider" min="0.8" max="1.5" step="0.1" value="1.1">
+                <span id="pitchValue">1.1</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="control-btn" onclick="playAll()">▶️ Listen to All Sentences</button>
+            <button class="control-btn" onclick="stopAll()">⏹️ Stop</button>
+            <div style="margin-top: 15px; color: #4a5568; font-size: 14px;">
+                🌟 Listen carefully and repeat after each sentence!
+            </div>
+        </div>
+
+        <div id="sentences">
+            <div class="sentence-item">
+                <div class="sentence-text">1. Number one: There are <span class="keyword">three books</span> on the table.</div>
+                <button class="play-btn" onclick="speak(this, 'Number one: There are three books on the table.')">
+                    <div class="play-icon"></div>
+                    Play
+                </button>
+            </div>
+
+            <div class="sentence-item">
+                <div class="sentence-text">2. Number two: There are <span class="keyword">two dolls</span> on the sofa.</div>
+                <button class="play-btn" onclick="speak(this, 'Number two: There are two dolls on the sofa.')">
+                    <div class="play-icon"></div>
+                    Play
+                </button>
+            </div>
+
+            <div class="sentence-item">
+                <div class="sentence-text">3. Number three: There is <span class="keyword">a bed</span> in the bedroom.</div>
+                <button class="play-btn" onclick="speak(this, 'Number three: There is a bed in the bedroom.')">
+                    <div class="play-icon"></div>
+                    Play
+                </button>
+            </div>
+
+            <div class="sentence-item">
+                <div class="sentence-text">4. Number four: There is <span class="keyword">a bag</span> under the table.</div>
+                <button class="play-btn" onclick="speak(this, 'Number four: There is a bag under the table.')">
+                    <div class="play-icon"></div>
+                    Play
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSpeech = null;
+        let isPlayingAll = false;
+
+        // Initialize sliders and voice selector
+        const speedSlider = document.getElementById('speedSlider');
+        const pitchSlider = document.getElementById('pitchSlider');
+        const speedValue = document.getElementById('speedValue');
+        const pitchValue = document.getElementById('pitchValue');
+        const voiceSelect = document.getElementById('voiceSelect');
+
+        speedSlider.addEventListener('input', () => {
+            speedValue.textContent = speedSlider.value + 'x';
+        });
+
+        pitchSlider.addEventListener('input', () => {
+            pitchValue.textContent = pitchSlider.value;
+        });
+
+        function populateVoices() {
+            const voices = speechSynthesis.getVoices();
+            voiceSelect.innerHTML = '<option value="">Auto (Malaysian English / Daniel en-GB preferred)</option>';
+            
+            // Sort voices by preference - Malaysian English first, then Daniel, then others
+            const sortedVoices = voices.filter(voice => voice.lang.startsWith('en')).sort((a, b) => {
+                // Highest priority: Malaysian English voices
+                const aMalaysian = a.lang.includes('MY') || a.name.toLowerCase().includes('malay') || 
+                                 a.name.toLowerCase().includes('malaysia') || a.lang.includes('en-MY');
+                const bMalaysian = b.lang.includes('MY') || b.name.toLowerCase().includes('malay') || 
+                                 b.name.toLowerCase().includes('malaysia') || b.lang.includes('en-MY');
+                
+                if (aMalaysian && !bMalaysian) return -1;
+                if (bMalaysian && !aMalaysian) return 1;
+                
+                // Second priority: Daniel (en-GB)
+                if (a.name.toLowerCase().includes('daniel') && a.lang.includes('GB')) return -1;
+                if (b.name.toLowerCase().includes('daniel') && b.lang.includes('GB')) return 1;
+                
+                // Third priority: Other British English
+                if (a.lang.includes('GB')) return -1;
+                if (b.lang.includes('GB')) return 1;
+                
+                // Fourth priority: Singaporean English (similar to Malaysian)
+                if (a.lang.includes('SG')) return -1;
+                if (b.lang.includes('SG')) return 1;
+                
+                return 0;
+            });
+            
+            sortedVoices.forEach((voice, index) => {
+                const option = document.createElement('option');
+                option.value = voices.indexOf(voice);
+                option.textContent = `${voice.name} (${voice.lang})`;
+                
+                // Mark special voices
+                if (voice.lang.includes('MY') || voice.name.toLowerCase().includes('malay') || voice.name.toLowerCase().includes('malaysia')) {
+                    option.textContent += ' 🇲🇾';
+                } else if (voice.name.toLowerCase().includes('daniel') && voice.lang.includes('GB')) {
+                    option.textContent += ' ⭐';
+                } else if (voice.lang.includes('SG')) {
+                    option.textContent += ' 🇸🇬';
+                }
+                voiceSelect.appendChild(option);
+            });
+        }
+
+        function getSelectedVoice() {
+            const voices = speechSynthesis.getVoices();
+            if (voiceSelect.value === '') {
+                // Auto mode - prefer Malaysian English first, then Daniel (en-GB)
+                
+                // First priority: Malaysian English
+                let preferredVoice = voices.find(voice => 
+                    voice.lang.includes('en-MY') || voice.lang.includes('MY') ||
+                    voice.name.toLowerCase().includes('malay') || 
+                    voice.name.toLowerCase().includes('malaysia')
+                );
+                
+                // Second priority: Daniel (en-GB)
+                if (!preferredVoice) {
+                    preferredVoice = voices.find(voice => 
+                        voice.name.toLowerCase().includes('daniel') && voice.lang.includes('GB')
+                    );
+                }
+                
+                // Third priority: Any British English
+                if (!preferredVoice) {
+                    preferredVoice = voices.find(voice => 
+                        voice.lang.includes('en-GB')
+                    );
+                }
+                
+                // Fourth priority: Singaporean English (similar accent to Malaysian)
+                if (!preferredVoice) {
+                    preferredVoice = voices.find(voice => 
+                        voice.lang.includes('en-SG') || voice.lang.includes('SG')
+                    );
+                }
+                
+                // Fallback: Any clear English voice
+                if (!preferredVoice) {
+                    preferredVoice = voices.find(voice => 
+                        voice.lang.startsWith('en') && 
+                        (voice.name.includes('Google') || voice.name.includes('Microsoft') || voice.default)
+                    );
+                }
+                
+                return preferredVoice;
+            } else {
+                return voices[parseInt(voiceSelect.value)];
+            }
+        }
+
+        function speak(button, text) {
+            // Stop any current speech
+            if (currentSpeech) {
+                speechSynthesis.cancel();
+                resetAllButtons();
+            }
+
+            // Create new speech
+            currentSpeech = new SpeechSynthesisUtterance(text);
+            
+            // Set voice parameters
+            currentSpeech.rate = parseFloat(speedSlider.value);
+            currentSpeech.pitch = parseFloat(pitchSlider.value);
+            currentSpeech.volume = 1;
+            
+            // Set voice using the selected voice
+            const selectedVoice = getSelectedVoice();
+            if (selectedVoice) {
+                currentSpeech.voice = selectedVoice;
+            }
+
+            // Update button state
+            button.classList.add('playing');
+            button.innerHTML = '<div class="pause-icon"></div> Playing';
+
+            // Handle speech events
+            currentSpeech.onend = () => {
+                resetButton(button);
+                currentSpeech = null;
+            };
+
+            currentSpeech.onerror = () => {
+                resetButton(button);
+                currentSpeech = null;
+            };
+
+            // Speak the text
+            speechSynthesis.speak(currentSpeech);
+        }
+
+        function resetButton(button) {
+            button.classList.remove('playing');
+            button.innerHTML = '<div class="play-icon"></div> Play';
+        }
+
+        function resetAllButtons() {
+            const buttons = document.querySelectorAll('.play-btn');
+            buttons.forEach(button => {
+                if (button.innerHTML.includes('Play')) {
+                    resetButton(button);
+                }
+            });
+        }
+
+        function playAll() {
+            if (isPlayingAll) return;
+            
+            isPlayingAll = true;
+            const sentences = [
+                'Number one: There are three books on the table.',
+                'Number two: There are two dolls on the sofa.',
+                'Number three: There is a bed in the bedroom.',
+                'Number four: There is a bag under the table.'
+            ];
+
+            let currentIndex = 0;
+
+            function playNext() {
+                if (currentIndex >= sentences.length) {
+                    isPlayingAll = false;
+                    return;
+                }
+
+                const text = sentences[currentIndex];
+                currentSpeech = new SpeechSynthesisUtterance(text);
+                
+                // Set voice parameters
+                currentSpeech.rate = parseFloat(speedSlider.value);
+                currentSpeech.pitch = parseFloat(pitchSlider.value);
+                currentSpeech.volume = 1;
+                
+                // Set voice using the selected voice
+                const selectedVoice = getSelectedVoice();
+                if (selectedVoice) {
+                    currentSpeech.voice = selectedVoice;
+                }
+
+                currentSpeech.onend = () => {
+                    currentIndex++;
+                    setTimeout(playNext, 1500); // Longer pause for children to process
+                };
+
+                currentSpeech.onerror = () => {
+                    isPlayingAll = false;
+                };
+
+                speechSynthesis.speak(currentSpeech);
+            }
+
+            playNext();
+        }
+
+        function stopAll() {
+            speechSynthesis.cancel();
+            resetAllButtons();
+            currentSpeech = null;
+            isPlayingAll = false;
+        }
+
+        // Load voices when available
+        speechSynthesis.addEventListener('voiceschanged', populateVoices);
+        
+        // Also populate immediately in case voices are already loaded
+        if (speechSynthesis.getVoices().length > 0) {
+            populateVoices();
+        }
+    </script>
+</body>
+</html>
